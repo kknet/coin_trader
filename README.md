@@ -14,6 +14,10 @@
 
 通过websocket协议从okcoin接入okcoin柜台上数字货币的tick行情，通过rest协议从众安交易所读写数字货币的行情
 
+za.py 上海众安交易所api
+okex.py 香港OKEX交易所，https://www.okex.com/intro_apiOverview.html
+bithumb.py 韩国数字货币交易所  https://www.bithumb.com/u1/US127
+
 2.dataRecorder
 
 基于api接口，将okcoin获取的数字货币的tick转为自定义结构，并实时存入mongoDB数据库中
