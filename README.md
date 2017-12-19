@@ -1,12 +1,35 @@
-# marketMaker
-接入okcoin的数字货币行情，并在众安交易所做市
 
 > 作者：吴典（Andy.Woo） @上海 手机/微信:18621528717
 >
 
 
+# 数字货币套利
 
-# 项目简介
+一.总体目标： 
+
+1.从全球数字货币交易量前20的交易所接入等行情
+
+2.将接入的行情入库，并在客户端展示各家交易所的实时行情
+
+3.提供在各家交易所下单的功能，从而实现套利
+
+
+二.开发流程
+
+1.在各交易所注册账号，获取api key、secret key等资料
+
+2.试用其rest接口和websocket接口
+
+3.在/prj/api中封装各个接口，并对外提供统一的Api调用
+
+4.在/prj/gateway中将通过各接口取到的数据做统一转化，并考虑存数据库
+
+5.开发自身的行情服务，提供前端访问
+
+6.交易功能打通
+
+
+# 数字货币做市:接入okcoin的数字货币行情，并在众安交易所做市
 
 一.代码结构
 
@@ -14,14 +37,7 @@
 
 通过websocket协议从okcoin接入okcoin柜台上数字货币的tick行情，通过rest协议从众安交易所读写数字货币的行情
 
-za.py 上海众安交易所api
-
-okex.py 香港OKEX交易所，https://www.okex.com/intro_apiOverview.html
-
-bithumb.py 韩国数字货币交易所  https://www.bithumb.com/u1/US127
-
-
-2.dataRecorder
+2.data_recorder
 
 基于api接口，将okcoin获取的数字货币的tick转为自定义结构，并实时存入mongoDB数据库中
 

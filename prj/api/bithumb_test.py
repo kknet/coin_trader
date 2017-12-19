@@ -25,7 +25,7 @@
 #
 
 import sys
-from xcoin_api_client import *
+from bithumb import *
 import pprint
 
 
