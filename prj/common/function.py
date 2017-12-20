@@ -15,7 +15,9 @@ MAX_NUMBER = 10000000000000
 MAX_DECIMAL = 4
 
 def getRootPath():
-	path = ''
+    path = os.path.abspath(os.path.dirname('./'))
+    if os.path.exists(path+'/log/') and os.path.exists(path+'/cfg/'):
+        return path
 	for i in range(1,10):
 		path = os.path.abspath(os.path.dirname('../'*i))
 		path = path 

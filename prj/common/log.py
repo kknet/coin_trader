@@ -1,7 +1,7 @@
 # encoding: UTF-8
 import logging
 import os
-from vtFunction import *
+from function import *
 
 
 class vnLog(object):

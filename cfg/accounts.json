@@ -1,16 +1,20 @@
 {
     "za":
     {
-        "url": "http://api.dev.tokenbank.com:8080",
+        "rest_url": "http://api.dev.tokenbank.com:8080",
         "token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDQklTQ3pFek1UYzFPRE0yTnpBM0dnNUpUeTVFVDA1SExrNUZXRlJGV0NJRVZWTkZVaWdCIiwiYXVkIjoiSU8uRE9ORy5ORVhURVgiLCJpc3MiOiJJTy5ET05HLlVTRVJNQU5BR0VSIiwiZXhwIjoxNTA0MjU5MjYzfQ.SbWS6YoXQgLv4N62Yxchnu-ncyT1GgX5UCA8i8pzYck",
         "id": "18"
     },
 
     "okex":
     {
-        "api_": "f1c5d942-beab-448a-8996-4d502e42cd96",
-        "secret_key": "8E0C2C77443BB43C1034E016055DC545",
-        "leverage": 20
+        "rest_url":"https://www.okex.com/api/v1",
+        "websocket_future_url":"wss://real.okex.com:10440/websocket/okexapi",
+        "websocket_url":"wss://real.okex.com:10441/websocket",
+        "id":"18621528717",
+        "password":"zhongan@",
+        "api_key": "ead59d71-5b0b-4257-9133-036a6a376aa2",
+        "secret_key": "D6C816AA175455B20D1341DAE8DD2E2D"
     },
 
     "bithumb":
@@ -18,6 +22,7 @@
         "id":"84020702@qq.com",
         "password":"zhongan@",
         "safe_password":"3515",
+        "rest_url": "",
         "api_key":"55cf8f8268c9369f5646772e6c998d9b",
         "secret_key":"2762a686471de5c75b7c98c3607d3ab0"
     }
