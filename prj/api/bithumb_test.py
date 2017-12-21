@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 #! /usr/bin/env python
 #
 # @brief XCoin API-call sample script (for Python 2.x, 3.x)
@@ -27,6 +29,7 @@
 import sys
 from bithumb import *
 import pprint
+import datetime
 
 
 api_key = "55cf8f8268c9369f5646772e6c998d9b";
@@ -48,14 +51,14 @@ rgParams = {
 # /public/orderbook
 # /public/recent_transactions
 
-print("Bithumb Public API URI('/public/ticker') Request...");
-result = api.xcoinApiCall("/public/ticker", rgParams);
-print("- Status Code: " + result["status"]);
-print("- Opening Price: " + result["data"]["opening_price"]);
-print("- Closing Price: " + result["data"]["closing_price"]);
-print("- Sell Price: " + result["data"]["sell_price"]);
-print("- Buy Price: " + result["data"]["buy_price"]);
-print("");
+# print("Bithumb Public API URI('/public/ticker') Request...");
+# result = api.xcoinApiCall("/public/ticker", rgParams);
+# print("- Status Code: " + result["status"]);
+# print("- Opening Price: " + result["data"]["opening_price"]);
+# print("- Closing Price: " + result["data"]["closing_price"]);
+# print("- Sell Price: " + result["data"]["sell_price"]);
+# print("- Buy Price: " + result["data"]["buy_price"]);
+# print("");
 
 
 #
@@ -67,16 +70,12 @@ print("");
 # /info/balance
 # /info/wallet_address
 
-print("Bithumb Private API URI('/info/account') Request...");
-result = api.xcoinApiCall("/info/account", rgParams);
-print("- Status Code: " + result["status"]);
-print("- Created: " + result["data"]["created"]);
-print("- Account ID: " + result["data"]["account_id"]);
-print("- Trade Fee: " + result["data"]["trade_fee"]);
-print("- Balance: " + result["data"]["balance"]);
-
-print("Bithumb Private API URI('/info/balance') Request...");
-result = api.xcoinApiCall("/info/balance", rgParams);
 
 
-sys.exit(0);
+# sys.exit(0);
+
+d1 = datetime.datetime.now()
+result = api.xcoinApiCall("/info/account", rgParams)
+d2 = datetime.datetime.now()
+d = d2 - d1
+print "bithumb:发送请求时间%s,收到回报时间%s,用时%s" % (str(d1), str(d2), str(d))

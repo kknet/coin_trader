@@ -103,3 +103,10 @@ class Api(object):
 
 	def evt2str(self, evt):
 		pass
+
+	def send_request(self, request):
+		try:
+			self.ws.send(request)
+		except websocket.WebSocketConnectionClosedException:
+			# 若触发异常则重连
+			self.reconnect(self)

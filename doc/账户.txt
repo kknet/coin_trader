@@ -9,3 +9,13 @@ coincheck：
 账号 84020702@qq.com  
 密码 zhongan2017
    
+huobi:
+账号 18621528717
+UID 17918191
+密码 zhongan@
+资金密码 zhongan2017
+
+gate:
+账号 84020702@qq.com  
+密码 zhongan@
+资金密码 zhongan2017

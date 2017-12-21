@@ -1,3 +1,6 @@
+﻿
+# encoding: UTF-8
+
 #
 # @brief XCoin API-call related functions (for Python 2.x, 3.x)
 #

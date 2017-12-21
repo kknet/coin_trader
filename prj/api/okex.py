@@ -2,7 +2,6 @@
 
 from Api import *
 
-########################################################################
 class Okex(Api):
 	def __init__(self, spi):
 		Api.__init__(self, spi)
@@ -35,75 +34,47 @@ class Okex(Api):
 		l = []
 		for key in sorted(params.keys()):
 			l.append('%s=%s' % (key, params[key]))
-		l.append('secret_key=%s' % self.secretKey)
+		l.append('secret_key=%s' % self.secret_key)
 		sign = '&'.join(l)
 		return hashlib.md5(sign.encode('utf-8')).hexdigest().upper()
 
 	# ----------------------------------------------------------------------
-	def sendMarketDataRequest(self, channel):
-		"""发送行情请求"""
-		# 生成请求
-		d = {}
-		d['event'] = 'addChannel'
-		d['binary'] = True
-		d['channel'] = channel
+	def sendMarketDataRequest(self, channel_list):
+		d_list = []
+		for channel in channel_list:
+			d = {}
+			d['event'] = 'addChannel'
+			d['binary'] = True
+			d['channel'] = channel
+			d_list.append(json.dumps(d))
+		
+		request = "["+','.join(d_list)+"]"
+		super.send_request(self, request)
 
-		# 使用json打包并发送
-		j = json.dumps(d)
-
-		# 若触发异常则重连
-		try:
-			self.ws.send(j)
-		except websocket.WebSocketConnectionClosedException:
-			pass
-
-	# ----------------------------------------------------------------------
 	def sendTradingRequest(self, channel, params):
-		"""发送交易请求"""
 		# 在参数字典中加上api_key和签名字段
-		params['api_key'] = self.apiKey
+		params['api_key'] = self.api_key
 		params['sign'] = self.generateSign(params)
 
-		# 生成请求
 		d = {}
 		d['event'] = 'addChannel'
 		d['binary'] = True
 		d['channel'] = channel
 		d['parameters'] = params
 
-		# 使用json打包并发送
-		j = json.dumps(d)
+		super.send_request(self, d)
 
-		# 若触发异常则重连
-		try:
-			self.ws.send(j)
-		except websocket.WebSocketConnectionClosedException:
-			pass
-
-
-	## 现货相关
-	#######################
-
-	# ----------------------------------------------------------------------
-	def subscribeSpotTicker(self, symbol):
-		"""订阅现货普通报价"""
-		self.sendMarketDataRequest('ok_sub_spot%s_%s_ticker' % (self.currency, symbol))
+	def subscribeSpotTicker(self, symbol_list):
+		channel_list = []
+		for symbol in symbol_list:
+			channel_list.append('ok_sub_spot_%s_ticker' % symbol)
+		self.sendMarketDataRequest() 
 
 	# ----------------------------------------------------------------------
 	def subscribeSpotDepth(self, symbol, depth):
 		"""订阅现货深度报价"""
 		self.sendMarketDataRequest('ok_sub_spot%s_%s_depth_%s' % (self.currency, symbol, depth))
 
-	def subscribeSpotTradeData(self, symbol):
-		"""订阅现货成交记录"""
-		self.sendMarketDataRequest('ok_sub_spot%s_%s_trades' % (self.currency, symbol))
-
-	# ----------------------------------------------------------------------
-	def subscribeSpotKline(self, symbol, interval):
-		"""订阅现货K线"""
-		self.sendMarketDataRequest('ok_sub_spot%s_%s_kline_%s' % (self.currency, symbol, interval))
-
-	# ----------------------------------------------------------------------
 	def spotTrade(self, symbol, type_, price, amount):
 		"""现货委托"""
 		params = {}
@@ -127,14 +98,6 @@ class Okex(Api):
 
 		self.sendTradingRequest(channel, params)
 
-	# ----------------------------------------------------------------------
-	def spotUserInfo(self):
-		"""查询现货账户"""
-		channel = 'ok_spot%s_userinfo' % (self.currency)
-
-		self.sendTradingRequest(channel, {})
-
-	# ----------------------------------------------------------------------
 	def spotOrderInfo(self, symbol, orderid):
 		"""查询现货委托信息"""
 		params = {}
@@ -145,12 +108,6 @@ class Okex(Api):
 
 		self.sendTradingRequest(channel, params)
 
-	# ----------------------------------------------------------------------
-	def subscribeSpotTrades(self):
-		"""订阅现货成交信息"""
-		channel = 'ok_sub_spot%s_trades' % (self.currency)
-
-		self.sendTradingRequest(channel, {})
 
 
 if __name__ == '__main__':
