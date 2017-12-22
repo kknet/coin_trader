@@ -1,4 +1,4 @@
-# encoding: UTF-8
+﻿# encoding: UTF-8
 
 """
 包含一些开发中常用的函数
@@ -16,23 +16,27 @@ MAX_DECIMAL = 4
 
 def getRootPath():
     path = os.path.abspath(os.path.dirname('./'))
-    if os.path.exists(path+'/log/') and os.path.exists(path+'/cfg/'):
+    if os.path.exists(path+'/prj/') and os.path.exists(path+'/cfg/'):
+        if not os.path.isdir(path+'/log/'):
+            os.makedirs(path+'/log/')
         return path
-	for i in range(1,10):
-		path = os.path.abspath(os.path.dirname('../'*i))
-		path = path 
-		if os.path.exists(path+'/log/') and os.path.exists(path+'/cfg/'):
-			break
-	return path
+    for i in range(1,10):
+        path = os.path.abspath(os.path.dirname('../'*i))
+        path = path 
+        if os.path.exists(path+'/prj/') and os.path.exists(path+'/cfg/'):
+            break
+    if not os.path.isdir(path+'/log/'):
+        os.makedirs(path+'/log/')
+    return path
 
 ROOT_PATH = getRootPath()
 def appendPath(path):
-	files = os.listdir(path)
-	for fi in files:
-		fi_d = os.path.join(path, fi)
-		if os.path.isdir(fi_d):
-			sys.path.append(fi_d)
-			appendPath(fi_d)
+    files = os.listdir(path)
+    for fi in files:
+        fi_d = os.path.join(path, fi)
+        if os.path.isdir(fi_d):
+            sys.path.append(fi_d)
+            appendPath(fi_d)
 
 appendPath(ROOT_PATH)
 

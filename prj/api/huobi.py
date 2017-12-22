@@ -19,7 +19,6 @@ from Api import *
 
 # 火币
 class Huobi(Api):
-
     def __init__(self, spi):
 		Api.__init__(self, spi)
 		self.name = 'huobi'
@@ -42,21 +41,29 @@ class Huobi(Api):
         sig = m.hexdigest()
         return sig
 
-    # 实时行情websocket接口
+    def SubTick(self, symbol):
+        d = {}
+        d['sub'] = 'market.%s.trade.detail' % symbol
+        d['id'] = 'sub_trade_detail_%s' % symbol
+        j = json.dumps(d)
+        Api.send_request(self, j)
+
+    def SubDepth(self, symbol, tp='step0'):
+        d = {}
+        d['sub'] = 'market.%s.depth.%s' % (symbol, tp)
+        d['id'] = 'sub_depth_%s_%s' % (symbol, tp)
+        j = json.dumps(d)
+        Api.send_request(self, j)
+
+"""
     def SubMarketKline(self, symbol, period):
-        """订阅k线"""
         d = {}
         d['sub'] = 'market.%s.kline.%s' % (symbol, period)
         d['id'] = 'sub_kline_%s_%s' % (symbol, period)
         j = json.dumps(d)
-        try:
-            self.ws.send(j)
-        except websocket.WebSocketConnectionClosedException:
-            self.reconnect()
-            self.ws.send(j)
+        Api.send_request(self, j)
 
     def ReqMarketKline(self, symbol, period, start_date=None, end_date=None):
-        """请求k线"""
         d = {}
         d['req'] = 'market.%s.kline.%s' % (symbol, period)
         d['id'] = 'req_kline_%s_%s' % (symbol, period)
@@ -65,72 +72,32 @@ class Huobi(Api):
         if end_date is not None:
             d['to'] = end_date
         j = json.dumps(d)
-        try:
-            self.ws.send(j)
-        except websocket.WebSocketConnectionClosedException:
-            self.reconnect()
-            self.ws.send(j)
+        Api.send_request(self, j)
 
-    def SubMarketDepth(self, symbol, tp='step0'):
-        """"订阅深度"""
-        d = {}
-        d['sub'] = 'market.%s.depth.%s' % (symbol, tp)
-        d['id'] = 'sub_depth_%s_%s' % (symbol, tp)
-        j = json.dumps(d)
-        try:
-            self.ws.send(j)
-        except websocket.WebSocketConnectionClosedException:
-            self.reconnect()
-            self.ws.send(j)
 
     def ReqMarketDepth(self, symbol, tp='step0'):
-        """请求深度"""
         d = {}
         d['req'] = 'market.%s.depth.%s' % (symbol, tp)
         d['id'] = 'req_depth_%s_%s' % (symbol, tp)
         j = json.dumps(d)
-        try:
-            self.ws.send(j)
-        except websocket.WebSocketConnectionClosedException:
-            self.reconnect()
-            self.ws.send(j)
-
-    def SubTradeDetail(self, symbol):
-        """请求深度"""
-        d = {}
-        d['sub'] = 'market.%s.trade.detail' % symbol
-        d['id'] = 'sub_trade_detail_%s' % symbol
-        j = json.dumps(d)
-        try:
-            self.ws.send(j)
-        except websocket.WebSocketConnectionClosedException:
-            self.reconnect()
-            self.ws.send(j)
+        Api.send_request(self, j)
 
     def ReqTradeDetail(self, symbol):
-        """请求深度"""
         d = {}
         d['req'] = 'market.%s.trade.detail' % symbol
         d['id'] = 'req_trade_detail_%s' % symbol
         j = json.dumps(d)
-        try:
-            self.ws.send(j)
-        except websocket.WebSocketConnectionClosedException:
-            self.reconnect()
-            self.ws.send(j)
-        url = '%s/common/symbols' % HUOBI_RESTT
+        Api.send_request(self, j)
+"""
 
 if __name__ == '__main__':
-    apiKey = "f0de6392-af55feb2-e7e5bda9-31b50"
-    secretKey = "cfe1646d-ff5a4f48-80c8b8a0-a2a18"
-
-    # api = DataAPI()
-    # host = HUOBI_WS
-
-    # api.connect(host, apiKey, secretKey, trace=False)
-    # sleep(2)
+    spi = Spi()
+    api = Huobi(spi)
+    api.connect()
     
     # api.SubMarketKline('ethusdt','1min')
     # api.SubMarketDepth('ethusdt','step0')
-    # api.SubTradeDetail('ethusdt')
+    api.SubTick('ethusdt')
     # api.ReqMarketKline('ethusdt','1min')
+
+    sleep(200)
